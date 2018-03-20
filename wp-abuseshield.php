@@ -16,7 +16,7 @@ if ( ! defined( "WPINC" ) ) {
 
 define( "WP_ABUSESHIELD_VERSION", "1.0.0" );
 
-require_once plugin_dir_path( dirname( __FILE__ ) ) . "include/class-wp-abuseshield-config.php";
+require_once plugin_dir_path( __FILE__ ) . "include/class-wp-abuseshield.php";
 
 function run_wp_abuseshield()
 {

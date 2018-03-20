@@ -15,13 +15,13 @@ class Wp_Abuseshield_AbuseIPDB
         $curl = curl_init($url);
         
         curl_setopt_array($curl, array(
-            CURLOPT_RETURNTRANSFER => 0,
+            CURLOPT_RETURNTRANSFER => 1,
             CURLOPT_USERAGENT => "WP AbuseShield WordPress Plugin",
             CURLOPT_SSL_VERIFYPEER => 0
         ));
 
         $result = curl_exec($curl);
-        curl_close();
+        curl_close($curl);
 
         return $result;
     }

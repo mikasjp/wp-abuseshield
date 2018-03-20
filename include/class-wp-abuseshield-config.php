@@ -5,11 +5,11 @@ class Wp_Abuseshield_Config
     protected $config_file;
     public $config;
 
-    function __construct()
+    public function __construct()
     {
-        $this->config_file = plugin_dir_path( dirname( __FILE__ ) ) . "wp-abuseshield-config.php";
+        $this->config_file = plugin_dir_path( __FILE__ ) . "../wp-abuseshield-config.php";
         
-        if(!file_exists($config_file))
+        if(!file_exists($this->config_file))
         {
             $this->config = [];
             $this->config["APIKey"] = "";
