@@ -16,10 +16,18 @@ class Wp_Abuseshield
 
     protected function LoadDependences()
     {
-        require_once plugin_dir_path( __FILE__ ) . "class-wp-abuseshield-config.php";
-        require_once plugin_dir_path( __FILE__ ) . "class-wp-abuseshield-ipobtainer.php";
-        require_once plugin_dir_path( __FILE__ ) . "class-wp-abuseshield-gatekeeper.php";
-        require_once plugin_dir_path( __FILE__ ) . "class-wp-abuseshield-abuseipdb.php";
+        $includePrefix = plugin_dir_path( __FILE__ ) . "class-wp-abuseshield-";
+        
+        $classList = [
+            "config",
+            "ipobtainer",
+            "gatekeeper",
+            "abuseipdb",
+            "cache"
+        ];
+
+        foreach($classList as $class)
+            require_once $includePrefix.$class.".php";
     }
 
     protected function CreateObjects()
