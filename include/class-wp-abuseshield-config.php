@@ -14,6 +14,7 @@ class Wp_Abuseshield_Config
             $this->config = [];
             $this->config["APIKey"] = "";
             $this->config["Secret"] = $this->GenerateSecret();
+            $this->config["CacheExpiration"] = 24;
             $this->SaveConfig();
         }
         else

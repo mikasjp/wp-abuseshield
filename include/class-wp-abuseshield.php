@@ -36,11 +36,27 @@ class Wp_Abuseshield
         $this->ip = new Wp_Abuseshield_IPObtainer();
         $this->gatekeeper = new Wp_Abuseshield_Gatekeeper($this->ip->GetIP());
         $this->abuseipdb = new Wp_Abuseshield_AbuseIPDB($this->config->config["APIKey"]);
+        $this->cache = new Wp_Abuseshield_Cache($this->ip->GetIP(), $this->config->config["CacheExpiration"]);
     }
 
     public function Run()
     {
-        
+        if(!$this->gatekeeper->CheckTicket($this->ip->GetIP()))
+        {
+            if($this->cache->CheckGuest())
+            {
+                if($this->abuseipdb->CheckIP($this->ip->GetIP()))
+                {
+                    $this->gatekeeper->IssueTicket($this->ip->GetIP());
+                }
+                else
+                    die("Access denied");
+            }
+            else
+            {
+                die("Access denied");
+            }
+        }
     }
 
 }

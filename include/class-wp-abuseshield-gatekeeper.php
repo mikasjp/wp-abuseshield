@@ -15,7 +15,6 @@ class Wp_Abuseshield_Gatekeeper
         // Check if the ticket exists
         if(!isset($_COOKIE["wp-abuseshield"]))
         {
-            if(WP_DEBUG) echo "Gatekeeper: cookie doesn't exist";
             return false;
         }
 
@@ -26,7 +25,6 @@ class Wp_Abuseshield_Gatekeeper
         // Check if the ticket is well segmented
         if(count($ticket) != 3)
         {
-            if(WP_DEBUG) echo "Gatekeeper: ticket segmentation error";
             return false;
         }
         
@@ -34,14 +32,12 @@ class Wp_Abuseshield_Gatekeeper
         $token = sha1(implode("#", array($ticket[0], $ticket[1], $this->secret)));
         if($token !== $ticket[2])
         {
-            if(WP_DEBUG) echo "Gatekeeper: bad signature";
             return false;
         }
 
         // Check if the ticket belongs to the right guest
         if($ticket[0] !== $IP)
         {
-            if(WP_DEBUG) echo "Gatekeeper: bad IP";
             return false;
         }
 
@@ -51,13 +47,11 @@ class Wp_Abuseshield_Gatekeeper
             // Check if the ticket is expired
             if($ticket[1] < time())
             {
-                if(WP_DEBUG) echo "Gatekeeper: expired ticket";
                 return false;
             }
         }
         else
         {
-            if(WP_DEBUG) echo "Gatekeeper: expiration time isn't numeric";
             return false;
         }
 
