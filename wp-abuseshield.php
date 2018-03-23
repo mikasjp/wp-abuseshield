@@ -14,6 +14,8 @@ if ( ! defined( "WPINC" ) ) {
 	die;
 }
 
+define("WP_ABUSESHIELD_VERSION", "1.0.0");
+
 require_once plugin_dir_path( __FILE__ ) . "include/class-wp-abuseshield.php";
 
 function activate_wp_abuseshield()
@@ -36,6 +38,29 @@ function run_wp_abuseshield()
 	$WPAbuseShield->Run();
 }
 
+function EnqueueAdminStyle()
+{
+	wp_register_style( 'wp_abuseshield_admin_css', plugins_url("admin/style.css", __FILE__ ), false, WP_ABUSESHIELD_VERSION );
+	wp_enqueue_style("wp_abuseshield_admin_css");
+}
+
+function wp_abuseshield_admin_panel()
+{
+	DEFINE("WP_ABUSESHIELD_ADMIN", true);
+	require_once plugin_dir_path( __FILE__ ) . "admin/admin.php";
+?>
+
+<?php
+}
+
+function wp_abuseshield_setup_menu()
+{
+	add_menu_page("WP AbuseShield Configuration", "WP AbuseShield", "manage_options", "wp-abuseshield", "wp_abuseshield_admin_panel");
+}
+
 add_action("wp", "run_wp_abuseshield");
 register_activation_hook( __FILE__, "activate_wp_abuseshield");
 register_deactivation_hook( __FILE__, "deactivate_wp_abuseshield");
+
+add_action('admin_menu', 'wp_abuseshield_setup_menu');
+add_action('admin_enqueue_scripts', 'EnqueueAdminStyle');

@@ -24,7 +24,7 @@ class Wp_Abuseshield_Config
     protected function LoadConfig()
     {
         $config_file_contents = file($this->config_file);
-        $config = json_decode(base64_decode($config_file_contents[1]));
+        $this->config = json_decode(base64_decode($config_file_contents[1]), true);
     }
 
     public function SaveConfig()
@@ -33,7 +33,7 @@ class Wp_Abuseshield_Config
         return file_put_contents($this->config_file, $config_string);
     }
 
-    protected function GenerateSecret()
+    public function GenerateSecret()
     {
         return sha1(time()."#".rand(0, 1000000));
     }

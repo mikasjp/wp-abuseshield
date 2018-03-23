@@ -1,0 +1,18 @@
+div.wp-abuseshield-admin-messagebox
+{
+    padding: 5px;
+    border: 1px solid #AAA;
+    border-radius: 5px;
+    margin: 5px 5px 5px 0px;
+    font-weight: bold;
+}
+
+div.wp-abuseshield-config-group
+{
+    margin: 5px 0px;
+}
+
+div.wp-abuseshield-config-row
+{
+    margin: 2px 0px;
+}

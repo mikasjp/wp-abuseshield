@@ -2,11 +2,11 @@
 
 class Wp_Abuseshield
 {
-    protected $config;
+    public $config;
     protected $ip;
     protected $gatekeeper;
     protected $abuseipdb;
-    protected $cache;
+    public $cache;
 
     public function __construct()
     {

@@ -55,4 +55,16 @@ class Wp_Abuseshield_Cache
         $wpdb->query("DELETE FROM ".$wpdb->prefix."abuseshield WHERE expiry<".time());
     }
 
+    public function ClearCache()
+    {
+        global $wpdb;
+        $wpdb->query("DELETE FROM ".$wpdb->prefix."abuseshield");
+    }
+
+    public function CountCache()
+    {
+        global $wpdb;
+        return $wpdb->get_var("SELECT COUNT(*) FROM ".$wpdb->prefix."abuseshield");
+    }
+
 }
