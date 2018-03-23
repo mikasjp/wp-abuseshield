@@ -5,7 +5,7 @@ if(!DEFINED("WP_ABUSESHIELD_ADMIN")) die;
 require_once plugin_dir_path( __FILE__ ) . "class-wp-abuseshield-admin.php";
 
 $admin = new Wp_Abuseshield_Admin();
-
+$WP_ABUSESHIELD_ADMIN_NONCE = wp_create_nonce("WP_ABUSESHIELD_ADMIN_NONCE");
 ?>
 <h1>WP AbuseShield Configuration</h1><hr>
 <div class="wp-abuseshield-messages">
@@ -26,6 +26,7 @@ $admin = new Wp_Abuseshield_Admin();
         <div class="wp-abuseshield-config-row">
             <input type="submit" name="WP_ABUSESHIELD_ADMIN_SUBMIT" class="button button-primary" value="Save">
         </div>
+        <input name="WP_ABUSESHIELD_ADMIN_NONCE" type="hidden" value="<?php echo $WP_ABUSESHIELD_ADMIN_NONCE; ?>" />
         </form>
     </div>
     </td></tr>
@@ -40,6 +41,7 @@ $admin = new Wp_Abuseshield_Admin();
         <div class="wp-abuseshield-config-row">
             <input type="submit" name="WP_ABUSESHIELD_ADMIN_RESET_SECRET"  class="button button-primary" value="Reset Secret Token">
         </div>
+        <input name="WP_ABUSESHIELD_ADMIN_NONCE" type="hidden" value="<?php echo $WP_ABUSESHIELD_ADMIN_NONCE; ?>" />
         </form>
     </div>
     </td></tr>
@@ -53,6 +55,7 @@ $admin = new Wp_Abuseshield_Admin();
         <div class="wp-abuseshield-config-row">
             <input type="submit" name="WP_ABUSESHIELD_ADMIN_CLEAR_CACHE"  class="button button-primary" value="Clear Cache">
         </div>
+        <input name="WP_ABUSESHIELD_ADMIN_NONCE" type="hidden" value="<?php echo $WP_ABUSESHIELD_ADMIN_NONCE; ?>" />
         </form>
     </div>
     </td></tr>

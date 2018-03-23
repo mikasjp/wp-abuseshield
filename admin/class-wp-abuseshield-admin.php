@@ -19,30 +19,32 @@ class WP_Abuseshield_Admin
 
     }
 
-    protected function VerifyCSRF()
+    protected function VerifyCSRFNonce()
     {
-        $secret = $this->plugin->config->config["Secret"];
-        $nonce = $_POST["WP_ABUSESHIELD_ADMIN_CSRF"];
-        $csrf_token = sha1("");
+        if(wp_verify_nonce($_POST["WP_ABUSESHIELD_ADMIN_NONCE"],"WP_ABUSESHIELD_ADMIN_NONCE"))
+            return true;
+        else
+            return false;
+
     }
 
     protected function ParseRequests()
     {
-        if(isset($_POST["WP_ABUSESHIELD_ADMIN_SUBMIT"]))
+        if(isset($_POST["WP_ABUSESHIELD_ADMIN_SUBMIT"]) && $this->VerifyCSRFNonce())
         {
             $this->plugin->config->config["APIKey"] = htmlspecialchars($_POST["WP_ABUSESHIELD_ADMIN_APIKEY"]);
             $this->plugin->config->SaveConfig();
             $this->ShowMessage("The configuration has been saved successfully");
         }
 
-        if(isset($_POST["WP_ABUSESHIELD_ADMIN_RESET_SECRET"]))
+        if(isset($_POST["WP_ABUSESHIELD_ADMIN_RESET_SECRET"]) && $this->VerifyCSRFNonce())
         {
             $this->plugin->config->config["Secret"] = $this->plugin->config->GenerateSecret();
             $this->plugin->config->SaveConfig();
             $this->ShowMessage("The secret token has been modified successfully");
         }
 
-        if(isset($_POST["WP_ABUSESHIELD_ADMIN_CLEAR_CACHE"]))
+        if(isset($_POST["WP_ABUSESHIELD_ADMIN_CLEAR_CACHE"]) && $this->VerifyCSRFNonce())
         {
             $this->plugin->cache->ClearCache();
             $this->ShowMessage("The cache has been cleared");
