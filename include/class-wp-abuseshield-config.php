@@ -13,6 +13,7 @@ class Wp_Abuseshield_Config
         {
             $this->config = [];
             $this->config["APIKey"] = "";
+            $this->config["DVC"] = "";
             $this->config["Secret"] = $this->GenerateSecret();
             $this->config["CacheExpiration"] = 24;
             $this->SaveConfig();
@@ -35,7 +36,7 @@ class Wp_Abuseshield_Config
 
     public function GenerateSecret()
     {
-        return sha1(time()."#".rand(0, 1000000));
+        return sha1(time()."#".rand(0, 1000000000));
     }
 
 }

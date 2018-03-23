@@ -33,6 +33,7 @@ class WP_Abuseshield_Admin
         if(isset($_POST["WP_ABUSESHIELD_ADMIN_SUBMIT"]) && $this->VerifyCSRFNonce())
         {
             $this->plugin->config->config["APIKey"] = htmlspecialchars($_POST["WP_ABUSESHIELD_ADMIN_APIKEY"]);
+            $this->plugin->config->config["DVC"] = htmlspecialchars($_POST["WP_ABUSESHIELD_ADMIN_DVC"]);
             $this->plugin->config->SaveConfig();
             $this->ShowMessage("The configuration has been saved successfully");
         }

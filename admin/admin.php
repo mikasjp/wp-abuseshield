@@ -24,9 +24,13 @@ $WP_ABUSESHIELD_ADMIN_NONCE = wp_create_nonce("WP_ABUSESHIELD_ADMIN_NONCE");
             <input type="text" name="WP_ABUSESHIELD_ADMIN_APIKEY" id="WP_ABUSESHIELD_ADMIN_APIKEY" size="40" value="<?php echo $admin->plugin->config->config["APIKey"]; ?>">
         </div>
         <div class="wp-abuseshield-config-row">
+            <label for="WP_ABUSESHIELD_ADMIN_DVC">AbuseIPDB domain verification code:</label><br>
+            <input type="text" name="WP_ABUSESHIELD_ADMIN_DVC" id="WP_ABUSESHIELD_ADMIN_DVC" size="40" value="<?php echo $admin->plugin->config->config["DVC"]; ?>">
+        </div>
+        <div class="wp-abuseshield-config-row">
             <input type="submit" name="WP_ABUSESHIELD_ADMIN_SUBMIT" class="button button-primary" value="Save">
         </div>
-        <input name="WP_ABUSESHIELD_ADMIN_NONCE" type="hidden" value="<?php echo $WP_ABUSESHIELD_ADMIN_NONCE; ?>" />
+        <input name="WP_ABUSESHIELD_ADMIN_NONCE" type="hidden" value="<?php echo $WP_ABUSESHIELD_ADMIN_NONCE; ?>">
         </form>
     </div>
     </td></tr>
@@ -41,7 +45,7 @@ $WP_ABUSESHIELD_ADMIN_NONCE = wp_create_nonce("WP_ABUSESHIELD_ADMIN_NONCE");
         <div class="wp-abuseshield-config-row">
             <input type="submit" name="WP_ABUSESHIELD_ADMIN_RESET_SECRET"  class="button button-primary" value="Reset Secret Token">
         </div>
-        <input name="WP_ABUSESHIELD_ADMIN_NONCE" type="hidden" value="<?php echo $WP_ABUSESHIELD_ADMIN_NONCE; ?>" />
+        <input name="WP_ABUSESHIELD_ADMIN_NONCE" type="hidden" value="<?php echo $WP_ABUSESHIELD_ADMIN_NONCE; ?>">
         </form>
     </div>
     </td></tr>
@@ -55,7 +59,7 @@ $WP_ABUSESHIELD_ADMIN_NONCE = wp_create_nonce("WP_ABUSESHIELD_ADMIN_NONCE");
         <div class="wp-abuseshield-config-row">
             <input type="submit" name="WP_ABUSESHIELD_ADMIN_CLEAR_CACHE"  class="button button-primary" value="Clear Cache">
         </div>
-        <input name="WP_ABUSESHIELD_ADMIN_NONCE" type="hidden" value="<?php echo $WP_ABUSESHIELD_ADMIN_NONCE; ?>" />
+        <input name="WP_ABUSESHIELD_ADMIN_NONCE" type="hidden" value="<?php echo $WP_ABUSESHIELD_ADMIN_NONCE; ?>">
         </form>
     </div>
     </td></tr>

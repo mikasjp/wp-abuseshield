@@ -18,6 +18,8 @@ define("WP_ABUSESHIELD_VERSION", "1.0.0");
 
 require_once plugin_dir_path( __FILE__ ) . "include/class-wp-abuseshield.php";
 
+$WPAbuseShield = new Wp_Abuseshield();
+
 function activate_wp_abuseshield()
 {
 	global $wpdb;
@@ -34,7 +36,7 @@ function deactivate_wp_abuseshield()
 
 function run_wp_abuseshield()
 {
-	$WPAbuseShield = new Wp_Abuseshield();
+	global $WPAbuseShield;
 	$WPAbuseShield->Run();
 }
 
@@ -42,6 +44,12 @@ function EnqueueAdminStyle()
 {
 	wp_register_style( 'wp_abuseshield_admin_css', plugins_url("admin/style.css", __FILE__ ), false, WP_ABUSESHIELD_VERSION );
 	wp_enqueue_style("wp_abuseshield_admin_css");
+}
+
+function wp_abuseshield_add_verification_tag()
+{
+	if(!empty($WPAbuseShield->config->config["DVC"]))
+		echo '<meta name="abuseipdb-verification" content="'.$WPAbuseShield->config->config["DVC"].'">';
 }
 
 function wp_abuseshield_admin_panel()
@@ -64,3 +72,4 @@ register_deactivation_hook( __FILE__, "deactivate_wp_abuseshield");
 
 add_action('admin_menu', 'wp_abuseshield_setup_menu');
 add_action('admin_enqueue_scripts', 'EnqueueAdminStyle');
+add_action("wp_head", "wp_abuseshield_add_verification_tag");
