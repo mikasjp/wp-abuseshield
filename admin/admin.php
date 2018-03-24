@@ -16,6 +16,8 @@ $WP_ABUSESHIELD_ADMIN_NONCE = wp_create_nonce("WP_ABUSESHIELD_ADMIN_NONCE");
 
     <table class="wp-list-table widefat">
     
+    <tr><td><span style="font-weight:bold">Your IP: </span><?php echo $admin->plugin->ip->GetIP(); ?></td></tr>
+
     <tr><td>
     <div class="wp-abuseshield-config-group">
         <form method="post">
