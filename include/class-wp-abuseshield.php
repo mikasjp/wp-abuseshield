@@ -3,7 +3,7 @@
 class Wp_Abuseshield
 {
     public $config;
-    protected $ip;
+    public $ip;
     protected $gatekeeper;
     protected $abuseipdb;
     public $cache;
@@ -50,7 +50,10 @@ class Wp_Abuseshield
                     $this->gatekeeper->IssueTicket($this->ip->GetIP());
                 }
                 else
+                {
+                    $this->cache->CacheGuest();
                     die("Access denied");
+                }
             }
             else
             {

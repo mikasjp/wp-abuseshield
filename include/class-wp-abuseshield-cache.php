@@ -37,14 +37,14 @@ class Wp_Abuseshield_Cache
         }
     }
 
-    public function CacheGuest($ip)
+    public function CacheGuest()
     {
         global $wpdb;
         $wpdb->insert(
             $wpdb->prefix."abuseshield",
             array(
-                "ip" => "",
-                "expiry" => (time() + 3600 * $this->hours)
+                "ip" => $this->hashedip,
+                "expiry" => date("Y-m-d H:i:s", (time() + 3600 * $this->hours))
             )
         );
     }
@@ -52,7 +52,7 @@ class Wp_Abuseshield_Cache
     protected function ClearExpiredGuests()
     {
         global $wpdb;
-        $wpdb->query("DELETE FROM ".$wpdb->prefix."abuseshield WHERE expiry<".time());
+        $wpdb->query("DELETE FROM ".$wpdb->prefix."abuseshield WHERE expiry<'".date("Y-m-d H:i:s", time())."'");
     }
 
     public function ClearCache()
