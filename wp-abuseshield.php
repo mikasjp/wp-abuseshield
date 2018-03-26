@@ -60,6 +60,8 @@ function wp_abuseshield_log_failed_login_attempt()
 	if($isUserBanned)
 	{
 		$WPAbuseShield->abuseipdb->ReportIP("Brute-force attack blocked by WP AbuseShield WordPress plugin");
+		$WPAbuseShield->cache->CacheGuest();
+		die("Access denied");
 	}
 }
 
