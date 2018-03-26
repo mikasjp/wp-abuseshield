@@ -34,6 +34,7 @@ class Wp_Abuseshield_Gatekeeper
         $token = sha1(implode("#", array($ticket[0], $ticket[1], $this->secret)));
         if($token !== $ticket[2])
         {
+            setcookie("wp-abuseshield", null, -1, "/");
             return false;
         }
 
@@ -68,7 +69,7 @@ class Wp_Abuseshield_Gatekeeper
         $ticket = implode("#", array($this->ip, $valid_until));
         $signature = sha1(implode("#", array($ticket, $this->secret)));
         $signed_ticket = implode("#", array($ticket, $signature));
-        return setcookie("wp-abuseshield", base64_encode($signed_ticket), $valid_until, "/", $_SERVER['SERVER_NAME'], false, true);
+        return setcookie("wp-abuseshield", base64_encode($signed_ticket), $valid_until, "/", $_SERVER["SERVER_NAME"], false, true);
     }
 
 }
