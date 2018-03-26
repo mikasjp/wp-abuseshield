@@ -16,7 +16,9 @@ class Wp_Abuseshield_Config
             $this->config["DVC"] = "";
             $this->ResetSecret();
             $this->config["CacheExpiration"] = 24;
-            $this->config["LoginPageOnly"] = false;
+            $this->config["BruteForceMemoryExpiration"] = 24;
+            $this->config["BruteForceMaxLoginAttempts"] = 3;
+            $this->config["LoginPageOnly"] = true;
             $this->config["UsingCloudflare"] = false;
             $this->SaveConfig();
         }

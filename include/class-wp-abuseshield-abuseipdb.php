@@ -30,7 +30,8 @@ class Wp_Abuseshield_AbuseIPDB
 
     public function ReportIP($comment="Blocked by WP AbuseShield WordPress plugin")
     {
-        $this->Request("https://www.abuseipdb.com/report/json?key=".$this->apikey."&category=21&comment=".$comment."&ip=".$this->ip);
+        $ip = WP_DEBUG?"127.0.0.1":$this->ip;
+        $this->Request("https://www.abuseipdb.com/report/json?key=".$this->apikey."&category=21&comment=".$comment."&ip=".$ip);
         return true;
     }
 

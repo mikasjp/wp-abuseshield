@@ -23,15 +23,28 @@ $WPAbuseShield = new Wp_Abuseshield();
 function activate_wp_abuseshield()
 {
 	global $wpdb;
-	$query = "CREATE TABLE ".$wpdb->prefix."abuseshield ( id BIGINT UNSIGNED AUTO_INCREMENT PRIMARY KEY, ip VARCHAR(40) NOT NULL, expiry TIMESTAMP );";
-	$wpdb->query($query);
+	
+	$queries = [
+		"CREATE TABLE ".$wpdb->prefix."abuseshield_cache ( id BIGINT UNSIGNED AUTO_INCREMENT PRIMARY KEY, ip VARCHAR(40) NOT NULL, expiry TIMESTAMP );",
+		"CREATE TABLE ".$wpdb->prefix."abuseshield_login ( id BIGINT UNSIGNED AUTO_INCREMENT PRIMARY KEY, ip VARCHAR(40) NOT NULL, expiry TIMESTAMP, attempts INT );"
+	];
+	foreach($queries as $q)	
+		$wpdb->query($q);
 }
 
 function deactivate_wp_abuseshield()
 {
 	global $wpdb;
-	$query = "DROP TABLE ".$wpdb->prefix."abuseshield;";
-	$wpdb->query($query);
+
+	$tables = [
+		"abuseshield_cache",
+		"abuseshield_login"
+	];
+	foreach($tables as $t)
+	{
+		$q = "DROP TABLE ".$wpdb->prefix.$t.";";
+		$wpdb->query($query);
+	}
 }
 
 function run_wp_abuseshield()
@@ -40,9 +53,19 @@ function run_wp_abuseshield()
 	$WPAbuseShield->Run();
 }
 
+function wp_abuseshield_log_failed_login_attempt()
+{
+	global $WPAbuseShield;
+	$isUserBanned = $WPAbuseShield->loginguard->RegisterFailedLoginAttempt();
+	if($isUserBanned)
+	{
+		$WPAbuseShield->abuseipdb->ReportIP("Brute-force attack blocked by WP AbuseShield WordPress plugin");
+	}
+}
+
 function EnqueueAdminStyle()
 {
-	wp_register_style( 'wp_abuseshield_admin_css', plugins_url("admin/style.css", __FILE__ ), false, WP_ABUSESHIELD_VERSION );
+	wp_register_style("wp_abuseshield_admin_css", plugins_url("admin/style.css", __FILE__ ), false, WP_ABUSESHIELD_VERSION );
 	wp_enqueue_style("wp_abuseshield_admin_css");
 }
 
@@ -66,10 +89,12 @@ function wp_abuseshield_setup_menu()
 	add_menu_page("WP AbuseShield Configuration", "WP AbuseShield", "manage_options", "wp-abuseshield", "wp_abuseshield_admin_panel");
 }
 
-add_action("wp", "run_wp_abuseshield");
+add_action("init", "run_wp_abuseshield");
 register_activation_hook( __FILE__, "activate_wp_abuseshield");
 register_deactivation_hook( __FILE__, "deactivate_wp_abuseshield");
+
 
 add_action('admin_menu', 'wp_abuseshield_setup_menu');
 add_action('admin_enqueue_scripts', 'EnqueueAdminStyle');
 add_action("wp_head", "wp_abuseshield_add_verification_tag");
+add_action("wp_login_failed", "wp_abuseshield_log_failed_login_attempt");

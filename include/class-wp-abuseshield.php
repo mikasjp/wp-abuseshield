@@ -5,8 +5,9 @@ class Wp_Abuseshield
     public $config;
     public $ip;
     protected $gatekeeper;
-    protected $abuseipdb;
+    public $abuseipdb;
     public $cache;
+    public $loginguard;
 
     public function __construct()
     {
@@ -23,7 +24,8 @@ class Wp_Abuseshield
             "ipobtainer",
             "gatekeeper",
             "abuseipdb",
-            "cache"
+            "cache",
+            "loginguard"
         ];
 
         foreach($classList as $class)
@@ -37,6 +39,7 @@ class Wp_Abuseshield
         $this->gatekeeper = new Wp_Abuseshield_Gatekeeper($this->ip->GetIP(), $this->config->Get("Secret"));
         $this->abuseipdb = new Wp_Abuseshield_AbuseIPDB($this->ip->GetIP(), $this->config->Get("APIKey"));
         $this->cache = new Wp_Abuseshield_Cache($this->ip->GetIP(), $this->config->Get("CacheExpiration"));
+        $this->loginguard = new Wp_Abuseshield_Loginguard($this->ip->GetIP(), $this->config->Get("BruteForceMemoryExpiration"), $this->config->Get("BruteForceMaxLoginAttempts"));
     }
 
     protected function ShouldPluginRun()
@@ -52,6 +55,10 @@ class Wp_Abuseshield
 
     public function Run()
     {
+
+        if($this->loginguard->IsUserBanned())
+            die("Access denied");
+        
         if(!$this->ShouldPluginRun())
             return false;
 

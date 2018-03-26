@@ -11,7 +11,7 @@ class Wp_Abuseshield_IPObtainer
         if($ip === false)
             throw new Exception("Passed IP address is not valid.");
         else
-            $this->IP = filter_var($string, FILTER_VALIDATE_IP);
+            $this->IP = filter_var($ip, FILTER_VALIDATE_IP);
     }
 
     public function GetIP()

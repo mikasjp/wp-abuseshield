@@ -16,14 +16,14 @@ class Wp_Abuseshield_Cache
     public function CheckGuest()
     {
         global $wpdb;
-        $findGuest = $wpdb->get_var("SELECT COUNT(*) FROM ".$wpdb->prefix."abuseshield WHERE ip='".$this->hashedip."'");
+        $findGuest = $wpdb->get_var("SELECT COUNT(*) FROM ".$wpdb->prefix."abuseshield_cache WHERE ip='".$this->hashedip."'");
 
         if($findGuest > 0)
         {
             $wpdb->update(
-                $wpdb->prefix."abuseshield",
+                $wpdb->prefix."abuseshield_cache",
                 array(
-                    "expiry" => time()
+                    "expiry" => date("Y-m-d H:i:s", (time() + 3600 * $this->hours))
                 ),
                 array(
                     "id" => $this->hashedip
@@ -41,7 +41,7 @@ class Wp_Abuseshield_Cache
     {
         global $wpdb;
         $wpdb->insert(
-            $wpdb->prefix."abuseshield",
+            $wpdb->prefix."abuseshield_cache",
             array(
                 "ip" => $this->hashedip,
                 "expiry" => date("Y-m-d H:i:s", (time() + 3600 * $this->hours))
@@ -52,19 +52,19 @@ class Wp_Abuseshield_Cache
     protected function ClearExpiredGuests()
     {
         global $wpdb;
-        $wpdb->query("DELETE FROM ".$wpdb->prefix."abuseshield WHERE expiry<'".date("Y-m-d H:i:s", time())."'");
+        $wpdb->query("DELETE FROM ".$wpdb->prefix."abuseshield_cache WHERE expiry<'".date("Y-m-d H:i:s", time())."'");
     }
 
     public function ClearCache()
     {
         global $wpdb;
-        $wpdb->query("DELETE FROM ".$wpdb->prefix."abuseshield");
+        $wpdb->query("DELETE FROM ".$wpdb->prefix."abuseshield_cache");
     }
 
     public function CountCache()
     {
         global $wpdb;
-        return $wpdb->get_var("SELECT COUNT(*) FROM ".$wpdb->prefix."abuseshield");
+        return $wpdb->get_var("SELECT COUNT(*) FROM ".$wpdb->prefix."abuseshield_cache");
     }
 
 }
