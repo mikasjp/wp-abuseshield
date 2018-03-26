@@ -17,6 +17,7 @@ class Wp_Abuseshield_Config
             $this->ResetSecret();
             $this->config["CacheExpiration"] = 24;
             $this->config["LoginPageOnly"] = false;
+            $this->config["UsingCloudflare"] = false;
             $this->SaveConfig();
         }
         else

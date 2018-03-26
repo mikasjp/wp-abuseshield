@@ -33,7 +33,7 @@ class Wp_Abuseshield
     protected function CreateObjects()
     {
         $this->config = new Wp_Abuseshield_Config();
-        $this->ip = new Wp_Abuseshield_IPObtainer();
+        $this->ip = new Wp_Abuseshield_IPObtainer($this->config->Get("UsingCloudflare"));
         $this->gatekeeper = new Wp_Abuseshield_Gatekeeper($this->ip->GetIP(), $this->config->Get("Secret"));
         $this->abuseipdb = new Wp_Abuseshield_AbuseIPDB($this->ip->GetIP(), $this->config->Get("APIKey"));
         $this->cache = new Wp_Abuseshield_Cache($this->ip->GetIP(), $this->config->Get("CacheExpiration"));
