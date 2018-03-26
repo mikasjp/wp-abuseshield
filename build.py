@@ -10,5 +10,5 @@ def zipdir(path, ignored, ziph):
 
 zipf = zipfile.ZipFile('wp-abuseshield.zip', 'w', zipfile.ZIP_DEFLATED)
 ignored = ["build.py", ".gitignore", "HowDoesItWork_bad.png", "HowDoesItWork_good.png", "README.md"]
-zipdir('./', ignored, zipf)
+zipdir("./", ignored, zipf)
 zipf.close()

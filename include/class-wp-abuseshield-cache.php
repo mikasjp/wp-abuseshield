@@ -6,9 +6,9 @@ class Wp_Abuseshield_Cache
     protected $hashedip;
     protected $hours;
 
-    function __construct($ip, $hours)
+    function __construct($IP, $hours)
     {
-        $this->hashedip = sha1($ip);
+        $this->hashedip = sha1($IP);
         $this->hours = $hours;
         $this->ClearExpiredGuests();
     }

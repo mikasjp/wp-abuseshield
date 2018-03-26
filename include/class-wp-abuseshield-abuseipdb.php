@@ -4,31 +4,23 @@ class Wp_Abuseshield_AbuseIPDB
 {
 
     protected $apikey;
+    protected $ip;
 
-    function __construct($key)
+    function __construct($IP, $key)
     {
+        $this->ip = $IP;
         $this->apikey = $key;
     }
 
     protected function Request($url)
     {
-        $curl = curl_init($url);
-        
-        curl_setopt_array($curl, array(
-            CURLOPT_RETURNTRANSFER => 1,
-            CURLOPT_USERAGENT => "WP AbuseShield WordPress Plugin",
-            CURLOPT_SSL_VERIFYPEER => 0
-        ));
-
-        $result = curl_exec($curl);
-        curl_close($curl);
-
-        return $result;
+        $result = wp_remote_get($url);
+        return wp_remote_retrieve_body($result);
     }
 
-    public function CheckIP($IP)
+    public function CheckGuest()
     {
-        $result = json_decode($this->Request("https://www.abuseipdb.com/check/".$IP."/json?key=".$this->apikey."&days=7"));
+        $result = json_decode($this->Request("https://www.abuseipdb.com/check/".$this->ip."/json?key=".$this->apikey."&days=7"));
 
         if(count($result) > 0)
             return false;
@@ -36,9 +28,9 @@ class Wp_Abuseshield_AbuseIPDB
             return true;
     }
 
-    public function ReportIP($IP, $comment="Blocked by WP AbuseShield WordPress plugin")
+    public function ReportIP($comment="Blocked by WP AbuseShield WordPress plugin")
     {
-        $this->Request("https://www.abuseipdb.com/report/json?key=".$this->apikey."&category=21&comment=".$comment."&ip=".$IP);
+        $this->Request("https://www.abuseipdb.com/report/json?key=".$this->apikey."&category=21&comment=".$comment."&ip=".$this->ip);
         return true;
     }
 
