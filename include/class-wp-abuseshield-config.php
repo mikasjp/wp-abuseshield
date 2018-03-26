@@ -3,7 +3,7 @@
 class Wp_Abuseshield_Config
 {
     protected $config_file;
-    public $config;
+    protected $config;
 
     public function __construct()
     {
@@ -14,8 +14,9 @@ class Wp_Abuseshield_Config
             $this->config = [];
             $this->config["APIKey"] = "";
             $this->config["DVC"] = "";
-            $this->config["Secret"] = $this->GenerateSecret();
+            $this->ResetSecret();
             $this->config["CacheExpiration"] = 24;
+            $this->config["LoginPageOnly"] = false;
             $this->SaveConfig();
         }
         else
@@ -28,15 +29,30 @@ class Wp_Abuseshield_Config
         $this->config = json_decode(base64_decode($config_file_contents[1]), true);
     }
 
-    public function SaveConfig()
+    protected function SaveConfig()
     {
         $config_string = "<?php /*\n" . base64_encode(json_encode($this->config));
         return file_put_contents($this->config_file, $config_string);
     }
 
-    public function GenerateSecret()
+    public function ResetSecret()
     {
-        return sha1(time()."#".rand(0, 1000000000));
+        $secret = sha1(time()."#".rand(0, 1000000000));
+        $this->Set("Secret", $secret);
+    }
+
+    public function Get($name)
+    {
+        if(isset($this->config[$name]))
+            return $this->config[$name];
+        else
+            return;
+    }
+
+    public function Set($name, $value)
+    {
+        $this->config[$name] = $value;
+        $this->SaveConfig();
     }
 
 }

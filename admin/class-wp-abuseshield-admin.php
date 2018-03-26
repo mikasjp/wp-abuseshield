@@ -14,7 +14,7 @@ class WP_Abuseshield_Admin
 
         $this->ParseRequests();
 
-        if(empty($this->plugin->config->config["APIKey"]))
+        if(empty($this->plugin->config->Get("APIKey")))
             $this->ShowMessage("For proper operation of the plugin it is necessary to provide your API key, which you can get by registering on the <a href=\"https://www.abuseipdb.com/\" target=\"_blank\">https://www.abuseipdb.com/</a>.");
 
     }
@@ -32,16 +32,14 @@ class WP_Abuseshield_Admin
     {
         if(isset($_POST["WP_ABUSESHIELD_ADMIN_SUBMIT"]) && $this->VerifyCSRFNonce())
         {
-            $this->plugin->config->config["APIKey"] = htmlspecialchars($_POST["WP_ABUSESHIELD_ADMIN_APIKEY"]);
-            $this->plugin->config->config["DVC"] = htmlspecialchars($_POST["WP_ABUSESHIELD_ADMIN_DVC"]);
-            $this->plugin->config->SaveConfig();
+            $this->plugin->config->Set("APIKey", htmlspecialchars($_POST["WP_ABUSESHIELD_ADMIN_APIKEY"]));
+            $this->plugin->config->Set("DVC", htmlspecialchars($_POST["WP_ABUSESHIELD_ADMIN_DVC"]));
             $this->ShowMessage("The configuration has been saved successfully");
         }
 
         if(isset($_POST["WP_ABUSESHIELD_ADMIN_RESET_SECRET"]) && $this->VerifyCSRFNonce())
         {
-            $this->plugin->config->config["Secret"] = $this->plugin->config->GenerateSecret();
-            $this->plugin->config->SaveConfig();
+            $this->plugin->config->ResetSecret();
             $this->ShowMessage("The secret token has been modified successfully");
         }
 

@@ -3,14 +3,16 @@
 class Wp_Abuseshield_Gatekeeper
 {   
     protected $secret;
+    protected $ip;
 
-    public function __construct($s)
+    public function __construct($IP, $s)
     {
+        $this->ip = $IP;
         $this->secret = $s;
     }
 
     // Check if the ticket is valid
-    public function CheckTicket($IP)
+    public function CheckTicket()
     {
         // Check if the ticket exists
         if(!isset($_COOKIE["wp-abuseshield"]))
@@ -32,11 +34,12 @@ class Wp_Abuseshield_Gatekeeper
         $token = sha1(implode("#", array($ticket[0], $ticket[1], $this->secret)));
         if($token !== $ticket[2])
         {
+            setcookie("wp-abuseshield", null, -1, "/");
             return false;
         }
 
         // Check if the ticket belongs to the right guest
-        if($ticket[0] !== $IP)
+        if($ticket[0] !== $this->ip)
         {
             return false;
         }
@@ -60,13 +63,13 @@ class Wp_Abuseshield_Gatekeeper
     }
 
     // Issue ticket for the visitor
-    public function IssueTicket($IP, $hours=24)
+    public function IssueTicket($hours=24)
     {
         $valid_until = time() + (3600 * $hours);
-        $ticket = implode("#", array($IP, $valid_until));
+        $ticket = implode("#", array($this->ip, $valid_until));
         $signature = sha1(implode("#", array($ticket, $this->secret)));
         $signed_ticket = implode("#", array($ticket, $signature));
-        return setcookie("wp-abuseshield", base64_encode($signed_ticket), $valid_until, "/");
+        return setcookie("wp-abuseshield", base64_encode($signed_ticket), $valid_until, "/", $_SERVER["SERVER_NAME"], false, true);
     }
 
 }

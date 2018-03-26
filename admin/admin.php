@@ -23,11 +23,11 @@ $WP_ABUSESHIELD_ADMIN_NONCE = wp_create_nonce("WP_ABUSESHIELD_ADMIN_NONCE");
         <form method="post">
         <div class="wp-abuseshield-config-row">
             <label for="WP_ABUSESHIELD_ADMIN_APIKEY">AbuseIPDB API key:</label><br>
-            <input type="text" name="WP_ABUSESHIELD_ADMIN_APIKEY" id="WP_ABUSESHIELD_ADMIN_APIKEY" size="40" value="<?php echo $admin->plugin->config->config["APIKey"]; ?>">
+            <input type="text" name="WP_ABUSESHIELD_ADMIN_APIKEY" id="WP_ABUSESHIELD_ADMIN_APIKEY" autocomplete="off" size="40" value="<?php echo $admin->plugin->config->Get("APIKey"); ?>">
         </div>
         <div class="wp-abuseshield-config-row">
             <label for="WP_ABUSESHIELD_ADMIN_DVC">AbuseIPDB domain verification code:</label><br>
-            <input type="text" name="WP_ABUSESHIELD_ADMIN_DVC" id="WP_ABUSESHIELD_ADMIN_DVC" size="40" value="<?php echo $admin->plugin->config->config["DVC"]; ?>">
+            <input type="text" name="WP_ABUSESHIELD_ADMIN_DVC" id="WP_ABUSESHIELD_ADMIN_DVC" size="40" autocomplete="off" value="<?php echo $admin->plugin->config->Get("DVC"); ?>">
         </div>
         <div class="wp-abuseshield-config-row">
             <input type="submit" name="WP_ABUSESHIELD_ADMIN_SUBMIT" class="button button-primary" value="Save">
@@ -42,7 +42,7 @@ $WP_ABUSESHIELD_ADMIN_NONCE = wp_create_nonce("WP_ABUSESHIELD_ADMIN_NONCE");
         <form method="post">
         <div class="wp-abuseshield-config-row">
             <label for="WP_ABUSESHIELD_ADMIN_SECRET">Your secret token:</label><br>
-            <input type="text" id="WP_ABUSESHIELD_ADMIN_SECRET" size="40" value="<?php echo $admin->plugin->config->config["Secret"]; ?>" readonly>
+            <input type="text" id="WP_ABUSESHIELD_ADMIN_SECRET" size="40" value="<?php echo $admin->plugin->config->Get("Secret"); ?>" readonly>
         </div>
         <div class="wp-abuseshield-config-row">
             <input type="submit" name="WP_ABUSESHIELD_ADMIN_RESET_SECRET"  class="button button-primary" value="Reset Secret Token">
@@ -65,7 +65,5 @@ $WP_ABUSESHIELD_ADMIN_NONCE = wp_create_nonce("WP_ABUSESHIELD_ADMIN_NONCE");
         </form>
     </div>
     </td></tr>
-
-    </td>
 
 </div>

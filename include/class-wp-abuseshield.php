@@ -34,20 +34,34 @@ class Wp_Abuseshield
     {
         $this->config = new Wp_Abuseshield_Config();
         $this->ip = new Wp_Abuseshield_IPObtainer();
-        $this->gatekeeper = new Wp_Abuseshield_Gatekeeper($this->ip->GetIP());
-        $this->abuseipdb = new Wp_Abuseshield_AbuseIPDB($this->config->config["APIKey"]);
-        $this->cache = new Wp_Abuseshield_Cache($this->ip->GetIP(), $this->config->config["CacheExpiration"]);
+        $this->gatekeeper = new Wp_Abuseshield_Gatekeeper($this->ip->GetIP(), $this->config->Get("Secret"));
+        $this->abuseipdb = new Wp_Abuseshield_AbuseIPDB($this->ip->GetIP(), $this->config->Get("APIKey"));
+        $this->cache = new Wp_Abuseshield_Cache($this->ip->GetIP(), $this->config->Get("CacheExpiration"));
+    }
+
+    protected function ShouldPluginRun()
+    {
+        if($this->config->Get("LoginPageOnly"))
+            if(basename($_SERVER['PHP_SELF']) == "wp-login.php")
+                return true;
+            else
+                return false;
+        else
+            return true;
     }
 
     public function Run()
     {
-        if(!$this->gatekeeper->CheckTicket($this->ip->GetIP()))
+        if(!$this->ShouldPluginRun())
+            return false;
+
+        if(!$this->gatekeeper->CheckTicket())
         {
             if($this->cache->CheckGuest())
             {
-                if($this->abuseipdb->CheckIP($this->ip->GetIP()))
+                if($this->abuseipdb->CheckGuest())
                 {
-                    $this->gatekeeper->IssueTicket($this->ip->GetIP());
+                    $this->gatekeeper->IssueTicket();
                 }
                 else
                 {
@@ -60,6 +74,8 @@ class Wp_Abuseshield
                 die("Access denied");
             }
         }
+
+        return true;
     }
 
 }
