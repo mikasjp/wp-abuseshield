@@ -4,6 +4,16 @@ class Wp_Abuseshield_Config
 {
     protected $config_file;
     protected $config;
+    protected $default = [
+        "APIKey" => "",
+        "DVC" => "",
+        "CacheExpiration" => 24,
+        "BruteForceMemoryExpiration" => 24,
+        "BruteForceMaxLoginAttempts" => 3,
+        "LoginPageOnly" => false,
+        "UsingCloudflare" => "",
+        "BruteForceProtection" => true
+    ];
 
     public function __construct()
     {
@@ -11,15 +21,7 @@ class Wp_Abuseshield_Config
         
         if(!file_exists($this->config_file))
         {
-            $this->config = [];
-            $this->config["APIKey"] = "";
-            $this->config["DVC"] = "";
-            $this->ResetSecret();
-            $this->config["CacheExpiration"] = 24;
-            $this->config["BruteForceMemoryExpiration"] = 24;
-            $this->config["BruteForceMaxLoginAttempts"] = 3;
-            $this->config["LoginPageOnly"] = true;
-            $this->config["UsingCloudflare"] = false;
+            $this->config = $this->default;
             $this->SaveConfig();
         }
         else
@@ -47,9 +49,12 @@ class Wp_Abuseshield_Config
     public function Get($name)
     {
         if(isset($this->config[$name]))
-            return $this->config[$name];
-        else
-            return;
+        {
+            $this->Set($name, $this->default[$name]);
+            $this->SaveConfig();
+        }
+        
+        return $this->config[$name];
     }
 
     public function Set($name, $value)

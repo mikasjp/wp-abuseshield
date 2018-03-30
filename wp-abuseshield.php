@@ -65,7 +65,7 @@ function wp_abuseshield_log_failed_login_attempt()
 	}
 }
 
-function EnqueueAdminStyle()
+function wp_abuseshield_enqueue_admin_style()
 {
 	wp_register_style("wp_abuseshield_admin_css", plugins_url("admin/style.css", __FILE__ ), false, WP_ABUSESHIELD_VERSION );
 	wp_enqueue_style("wp_abuseshield_admin_css");
@@ -73,6 +73,7 @@ function EnqueueAdminStyle()
 
 function wp_abuseshield_add_verification_tag()
 {
+	global $WPAbuseShield;
 	if(!empty($WPAbuseShield->config->config["DVC"]))
 		echo '<meta name="abuseipdb-verification" content="'.$WPAbuseShield->config->config["DVC"].'">';
 }
@@ -97,6 +98,7 @@ register_deactivation_hook( __FILE__, "deactivate_wp_abuseshield");
 
 
 add_action('admin_menu', 'wp_abuseshield_setup_menu');
-add_action('admin_enqueue_scripts', 'EnqueueAdminStyle');
+add_action('admin_enqueue_scripts', 'wp_abuseshield_enqueue_admin_style');
 add_action("wp_head", "wp_abuseshield_add_verification_tag");
-add_action("wp_login_failed", "wp_abuseshield_log_failed_login_attempt");
+if($WPAbuseShield->config->Get("BruteForceProtection"))
+	add_action("wp_login_failed", "wp_abuseshield_log_failed_login_attempt");

@@ -56,8 +56,9 @@ class Wp_Abuseshield
     public function Run()
     {
 
-        if($this->loginguard->IsUserBanned())
-            die("Access denied");
+        if($this->config->Get("BruteForceProtection"))
+            if($this->loginguard->IsUserBanned())
+                die("Access denied");
         
         if(!$this->ShouldPluginRun())
             return false;
