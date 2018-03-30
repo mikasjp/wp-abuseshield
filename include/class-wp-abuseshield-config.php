@@ -11,7 +11,7 @@ class Wp_Abuseshield_Config
         "BruteForceMemoryExpiration" => 24,
         "BruteForceMaxLoginAttempts" => 3,
         "LoginPageOnly" => false,
-        "UsingCloudflare" => "",
+        "UsingCloudflare" => false,
         "BruteForceProtection" => true
     ];
 
