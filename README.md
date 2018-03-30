@@ -18,7 +18,7 @@ The idea is very simple. The plugin checks the IP address of the new user in the
 * Works without JavaScript
 
 ## Getting started
-1. Install th plugin
+1. Install the plugin
 2. Register an account on [AbuseIPDB](https://www.abuseipdb.com/) as a webmaster
 3. Copy your API key to the plugin configuration panel
 4. (Optional) Copy your Domain Verification Code (from meta tag) to the plugin configuration panel
